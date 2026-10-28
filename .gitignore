@@ -1,21 +1,26 @@
-# Dependency directories
-node_modules/
-target/
-.mvn/wrapper/maven-wrapper.jar
+# ByteCare Intelligence AI Microservice — .gitignore
 
-# Python
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-.pytest_cache/
-venv/
-.venv/
-env/
 
-# Expo / React Native
-.expo/
-dist/
-web-build/
+# C extensions
+*.so
+
+# Environments
+.env
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
 
 # IDE / OS
 .idea/
@@ -27,6 +32,3 @@ Thumbs.db
 
 # Logs
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
