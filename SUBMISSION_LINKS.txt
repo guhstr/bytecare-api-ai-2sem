@@ -1,0 +1,24 @@
+================================================================================
+GLOBAL SOLUTION FIAP — 2º SEMESTRE
+DISCIPLINA: Disruptive Architectures: IoT, IoB & Generative IA
+PROJETO: ByteCare (bytecare-api-ai-2sem)
+================================================================================
+
+1. LINK DO REPOSITÓRIO GITHUB DO PROJETO:
+   https://github.com/Gutemberg149/bytecare-api-ai-2sem
+
+   (Mirror alternativo: https://github.com/guhstr/bytecare-api-ai-2sem)
+
+2. LINK DO VÍDEO PITCH NO YOUTUBE (NÃO LISTADO / UNLISTED):
+   https://youtu.be/SEU_VIDEO_AQUI
+
+   *OBS: O roteiro completo de 5 minutos, timestamps e falas estão documentados em:
+   docs/VIDEO_PITCH_SCRIPT.md
+
+================================================================================
+COMPONENTES DO PROJETO ENTREGUE NO REPOSITÓRIO:
+- ai/      : Microserviço de IA FastAPI (Python) com Motor Determinístico + Gemini + Guardrails
+- backend/ : API RESTful Java Spring Boot 3.3.4 com Oracle DB
+- mobile/  : Aplicativo Mobile React Native Expo com telas de Análise e Chatbot IA
+- docs/    : Arquitetura completa, Roteiro do Pitch, Guia de Execução e Screenshots
+================================================================================

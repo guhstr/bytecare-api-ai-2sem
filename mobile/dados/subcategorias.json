@@ -1,0 +1,49 @@
+{
+  "subcategorias": [
+    {
+      "id": 101,
+      "nome": "Cães",
+      "rota": "animal"
+    },
+    {
+      "id": 102,
+      "nome": "Gatos",
+      "rota": "animal"
+    },
+    {
+      "id": 103,
+      "nome": "Peixes",
+      "rota": "animal"
+    },
+    {
+      "id": 104,
+      "nome": "Vaca",
+      "rota": "animal"
+    },
+    {
+      "id": 105,
+      "nome": "Equinos",
+      "rota": "animal"
+    },
+    {
+      "id": 106,
+      "nome": "Galinha",
+      "rota": "animal"
+    },
+    {
+      "id": 107,
+      "nome": "Papagaio",
+      "rota": "animal"
+    },
+    {
+      "id": 108,
+      "nome": "Canário",
+      "rota": "animal"
+    },
+    {
+      "id": 109,
+      "nome": "Calopsita",
+      "rota": "animal"
+    }
+  ]
+}

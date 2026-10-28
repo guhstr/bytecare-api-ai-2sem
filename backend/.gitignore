@@ -1,0 +1,192 @@
+# HELP
+HELP.md
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
+logs/
+backend/logs/
+**/logs/
+**/logs/**/*.log
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Exclude Maven wrapper jar but keep wrapper properties
+!/.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# Maven Wrapper specific
+.mvn/wrapper/maven-wrapper.jar
+.mvn/
+mvnw
+mvnw.cmd
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+.idea_modules/
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/shelf/
+.idea/**/contentModel.xml
+.idea/**/dataSources/
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+.idea/**/gradle.xml
+.idea/**/libraries
+.idea/**/modules.xml
+.idea/**/runConfigurations.xml
+.idea/**/compiler.xml
+.idea/**/encodings.xml
+.idea/**/jarRepositories.xml
+.idea/**/misc.xml
+.idea/**/vcs.xml
+.idea/**/workspace.xml
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+.classpath
+.project
+.settings/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Spring Boot
+application-local.yaml
+application-dev.yaml
+application-prod.yaml
+bootstrap-local.yaml
+
+# Docker
+docker-compose.override.yml
+*.log
+.dockerignore
+
+# Test coverage
+.coveralls.yml
+coverage/
+.nyc_output
+.test_output
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Secrets
+*.p12
+*.pem
+*.key
+*.crt
+*.jks
+*.cer
+secrets/
+.secrets
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+*.dump
+
+# Database
+*.db
+*.h2.db
+*.mv.db
+*.trace.db
+/data/
+/h2-data/
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# Actuator
+actuator/
+!/actuator
+
+# DevTools
+.springBootDevTools/
+
+# Caffeine cache
+.idea/caches/
+
+# Logback
+*.log
+*.gz
+logs/
+backend/**/*.log
+backend/**/*.gz
+
+# Application specific
+application.log
+application.log.*
+*.log.gz
+backend/application.log.*
+backend/application.loglogs/
+../logs/
+*.log
+*.log.*
+*.gz
+logs/
+../logs/
