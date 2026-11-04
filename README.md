@@ -4,7 +4,7 @@ Componente de Inteligência Artificial do **ByteCare**, solução desenvolvida p
 
 ## Links
 
-- Vídeo no YouTube (não listado): _adicionar o link após a publicação_
+- Vídeo no YouTube (não listado): https://youtu.be/gXPiw4xc-ps
 - GitHub: https://github.com/guhstr/bytecare-api-ai-2sem
 
 ## Integrantes
