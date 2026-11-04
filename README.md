@@ -1,255 +1,368 @@
-# ByteCare Intelligence — Microserviço de IA Generativa & Preditiva
+# ByteCare Intelligence API
 
-<div align="center">
+Componente de Inteligência Artificial do **ByteCare**, solução desenvolvida para a **CLYVO VET** na disciplina **Disruptive Architectures: IoT, IoB & Generative IA** (Sprint 3).
 
-![ByteCare Architecture](docs/arquitetura.png)
+## Links
 
-**Global Solution 2º Semestre — FIAP**  
-*Disciplina: Disruptive Architectures: IoT, IoB & Generative IA*  
-*Repositório Oficial do Serviço de IA: `bytecare-api-ai-2sem`*
+- Vídeo no YouTube (não listado): _adicionar o link após a publicação_
+- GitHub: https://github.com/guhstr/bytecare-api-ai-2sem
 
-[![Python 3.14](https://img.shields.io/badge/Python-3.14%20%7C%203.10%2B-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-teal.svg)](https://fastapi.tiangolo.com/)
-[![Pydantic v2](https://img.shields.io/badge/Pydantic-v2.0-e92063.svg)](https://docs.pydantic.dev/)
-[![Google Gemini](https://img.shields.io/badge/Google_Gemini-2.5_Flash-4285F4.svg)](https://ai.google.dev/)
-[![Tests](https://img.shields.io/badge/Unit_Tests-Passing%20(100%25)-success.svg)]()
-[![CFMV Compliant](https://img.shields.io/badge/CFMV%201.488%2F2022-Compliant-green.svg)]()
+## Integrantes
 
----
+- RM 565771 - Erik Naoki
+- RM 561650 - Gustavo Sartori
+- RM 562267 - Gutemberg Rocha
+- RM 564361 - João Henrique
+- RM 561171 - Juliana da Silva
 
-### 🔗 Links Oficiais da Entrega
-**Repositório GitHub:** [https://github.com/Gutemberg149/bytecare-api-ai-2sem](https://github.com/Gutemberg149/bytecare-api-ai-2sem)  
-*(Mirror alternativo: [https://github.com/guhstr/bytecare-api-ai-2sem](https://github.com/guhstr/bytecare-api-ai-2sem))*  
-**Vídeo Pitch no YouTube (Não Listado):** [https://youtu.be/SEU_VIDEO_AQUI](https://youtu.be/SEU_VIDEO_AQUI) *(Roteiro completo de 5 min disponível em [docs/VIDEO_PITCH_SCRIPT.md](docs/VIDEO_PITCH_SCRIPT.md))*
+## Problema
 
-</div>
+Na jornada de cuidado do pet, o cuidado costuma ser **reativo**: o tutor só procura a clínica quando algo já deu errado.
 
----
+- vacinas e reforços vencem sem que o tutor perceba;
+- tratamentos prescritos são interrompidos ou esquecidos;
+- mudanças de comportamento e de peso passam despercebidas;
+- a clínica não sabe quais pacientes precisam de contato primeiro e trata todos da mesma forma.
 
-## 📋 Sumário do Projeto
+O **ByteCare Intelligence** usa IA para transformar o histórico do pet em um **plano de cuidado contínuo, personalizado e priorizado**, ajudando o tutor a saber o que fazer e quando, e ajudando a clínica a decidir quem atender e qual serviço oferecer.
 
-O **`bytecare-api-ai-2sem`** é o microserviço de inteligência artificial dedicado do ecossistema **ByteCare**. Construído em **Python com FastAPI**, ele é responsável por processar o histórico anamnésico dos animais cadastrados (provenientes do backend Java e consumidos pelo aplicativo mobile Expo) e fornecer:
+A solução não substitui avaliação veterinária.
 
-1. **Análise Clínica Longitudinal com Cálculo Determinístico de Risco:** Avalia os três pilares clínicos (**Preventivo**, **Terapêutico** e **Bem-estar**) e consolida o histórico em scores matemáticos, identificando vacinas atrasadas e sinais de alerta.
-2. **Chatbot de Triagem & Assistência Virtual em Tempo Real:** Conduz diálogos empáticos e contextualizados para a espécie do animal, aplicando salvaguardas veterinárias imediatas com detecção determinística de emergência médica.
-3. **Resiliência e Fallback Seguro com Mock Integrado:** Caso a chave da API do Google Gemini não seja fornecida ou haja timeout de rede, a API aciona automaticamente um gerador sintético determinístico com **100% de paridade de esquema Pydantic**, garantindo que a aplicação nunca fique indisponível.
+## Solução
 
----
+A API possui quatro funcionalidades principais:
 
-## 🏛️ Estrutura do Repositório
+### Plano de cuidado personalizado (tutor)
 
-O repositório segue rigorosamente o padrão modular da aplicação de inteligência artificial:
+Recebe o perfil do pet e seu histórico (vacinas, preventivos, tratamentos, consultas, bem-estar e comportamento) e devolve:
 
+- perfil de personalização (espécie, fase de vida, vacinas essenciais registradas e pendentes);
+- **ações priorizadas**, cada uma com prioridade, prazo em dias, motivo e dados de origem;
+- **serviços da clínica recomendados**, com score de relevância;
+- score de risco de 0 a 100;
+- mensagem personalizada para o tutor e resumo para a clínica.
+
+### Priorização de pacientes (clínica)
+
+Recebe vários pets e devolve uma **fila ordenada por prioridade e score**, com o motivo principal, a ação sugerida para a equipe (ex.: contatar em até 48h) e os serviços a oferecer.
+
+### Análise do histórico
+
+Organiza os registros preventivos, terapêuticos e de bem-estar em um resumo estruturado com prioridade, fatores relevantes, próximos passos e sinais de atenção.
+
+### Assistente ByteCare
+
+Chat que usa a mensagem do usuário, o histórico da conversa e o contexto do pet para orientar, identificar situações de atenção e retornar ações estruturadas (cadastrar pet, registrar vacina, registrar condição, pedir agendamento, listar e apagar pets).
+
+- mantém o contexto da conversa: não repete perguntas já respondidas;
+- recebe o plano de cuidado calculado pelo motor, para que chat e análise digam a mesma coisa;
+- no app, fica acessível por um botão flutuante em todas as telas logadas e guarda a conversa de cada pet no aparelho;
+- toda ação sugerida pelo chat só é gravada depois da confirmação no app;
+- no assistente geral (aberto pela Home), citar um pet cadastrado pelo nome ("apaga o Draco", "o Thor está mancando") troca o contexto para esse pet e carrega o histórico dele.
+
+#### Ações pelo chat
+
+A IA não grava nada: ela devolve o campo `acao` com os dados, o app mostra uma janela de confirmação e a API principal grava.
+
+| Ação (`acao`) | Exemplo de pedido | Regra |
+|---|---|---|
+| `cadastrar_animal` | "quero cadastrar meu gato Mingau, siamês, 10 meses" | pergunta só o que faltar (nome, espécie, raça, idade), inclusive em respostas em lista ("Thor, sem raça definida, 5 anos"); vacinas já tomadas (com a próxima dose) e sinais de saúde ditos no meio do cadastro vão para o histórico logo depois, com confirmação; o pet novo vira o contexto da conversa |
+| `cadastrar_vacina` | "registra a V10 do Thor" | só com pet identificado e intenção clara de salvar |
+| `registrar_observacao` | "registra que ele tem uma pata a menos" | vai para o bem-estar do pet; condição permanente (amputação, alergia, doença crônica) também entra nas observações do cadastro e passa a ser considerada no plano |
+| `agendar` | "quero marcar consulta e vacina sexta às 14h" | só envia com dia **e** horário (ou "qualquer dia"); dia e horário vêm da conversa, nunca do modelo; a clínica confirma ou recusa e o tutor é notificado |
+| `listar_animais` | "quais são os meus pets?" | só leitura; o app busca na API principal os pets do usuário (a clínica vê todos). Também há um botão de patinha no topo do assistente |
+| `apagar_animal` | "apaga o Draco" | só com pedido explícito e pet aberto; o app confere se o usuário é o tutor que cadastrou o pet ou a clínica, e a API principal confere de novo (403 para os demais); histórico e agendamentos do pet também são apagados |
+
+### Guardrails do assistente
+
+| Camada | O que faz |
+|---|---|
+| Entrada | Bloqueia tentativas de mudar as regras ("ignore as instruções", "mostre o system prompt") e assuntos fora de saúde e cuidado animal, sem chamar o LLM |
+| Prompt | Escopo restrito, regras protegidas contra manipulação, proibição de diagnóstico, prescrição e doses |
+| Saída | Respostas marcadas como fora do escopo são substituídas; respostas com dose (mg, ml, gotas, comprimidos) são trocadas por uma orientação segura |
+| Risco | Sinais de urgência sempre elevam a resposta para "urgente", mesmo que o LLM discorde |
+| Ações | Só com pet identificado e confirmação no app; agendamento exige dia e horário; apagar pet só com pedido explícito, e o modelo não dispara essa ação sozinho |
+
+## IA utilizada
+
+A solução utiliza uma **arquitetura híbrida**:
+
+| Camada | Abordagem | Papel |
+|---|---|---|
+| Motor de recomendação | Sistema de recomendação baseado em regras inteligentes | Decide ações, prazos, serviços, score e prioridade |
+| Motor de risco | Regras determinísticas + guardrails | Detecta sinais de urgência e define prioridade mínima |
+| Camada LLM | IA Generativa (Google Gemini) com System Prompt e Structured Output (Pydantic) | Personaliza a linguagem para o tutor e para a clínica, conduz o chat |
+
+**Por que híbrida?** Em saúde animal, decisões de prioridade precisam ser **explicáveis, auditáveis e repetíveis**. Um LLM sozinho pode inventar datas ou reduzir a gravidade de um sinal. Por isso as decisões ficam no motor determinístico e o LLM atua onde ele é melhor: linguagem natural, empatia e conversação. O LLM **nunca** altera prioridade, prazo ou serviço recomendado.
+
+Também não usamos um modelo preditivo treinado porque o projeto ainda não possui uma base histórica rotulada (desfechos clínicos) suficiente. A arquitetura já registra os dados necessários para evoluir para esse modelo no futuro.
+
+A IA é orientada a:
+
+- não diagnosticar;
+- não prescrever;
+- não inventar informações;
+- não alterar tratamentos prescritos;
+- recomendar atendimento veterinário quando necessário.
+
+Detalhes em [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Personalização
+
+A personalização considera:
+
+- **espécie**: calendário de vacinas por espécie e fase de vida para cães, gatos, equinos, bovinos e galinhas; para papagaio, calopsita, canário, coelho e peixe (sem vacinas de rotina no Brasil), orientação preventiva própria. A espécie exata vem da subcategoria do app, da raça ou da conversa (o tipo PASSARO reúne várias aves);
+- **fase de vida**: filhote, adulto ou sênior, com limites por espécie (ex.: cão sênior a partir de 7 anos, gato a partir de 10);
+- **histórico**: vacinas atrasadas ou a vencer, tratamentos em andamento, tempo desde a última consulta;
+- **comportamento e bem-estar**: alterações de comportamento, peso, dentes, pele e parasitas geram ações e serviços específicos.
+
+Exemplo: um cão sênior sem consulta há mais de 6 meses recebe "check-up sênior" e "exames laboratoriais"; um filhote sem vacina essencial recebe prioridade alta e prazo de 7 dias.
+
+## Dados utilizados
+
+| Dado | Origem | Utilização |
+|---|---|---|
+| Perfil do pet (espécie, raça, nascimento, peso, castração) | API principal / Oracle | Personalização e fase de vida |
+| Vacinas e preventivos | API principal / Oracle | Pendências, atrasos e lembretes |
+| Tratamentos e medicamentos | API principal / Oracle | Adesão e consulta de retorno |
+| Consultas | Clínica | Check-up periódico |
+| Bem-estar e comportamento | Registros do tutor no app | Sinais de atenção, serviços específicos |
+| Histórico do chat e mensagem atual | App | Contexto da conversa e avaliação de risco |
+| Agendamentos (serviços, dia, horário, status) | API principal / Oracle (tabela AGENDAMENTO) | Pedido do tutor pelo chat e resposta da clínica |
+| Tutor do pet | API principal / Oracle (coluna ANIMAL.TUTOR) | O tutor só vê e gerencia os próprios pets; a clínica vê todos com o nome do tutor; notificação da clínica vai para o dono |
+
+Dicionário completo em [docs/DADOS.md](docs/DADOS.md).
+
+## Arquitetura
+
+<p align="center">
+  <img src="docs/arquitetura.png" alt="Arquitetura ByteCare" width="420">
+  <img src="docs/fluxo-ia.png" alt="Como a IA decide" width="420">
+</p>
+
+```text
+Tutor / Clínica CLYVO VET
+  ↓
+ByteCare Mobile (React Native / Expo)
+  ├── API Java / Spring Boot (:8080)
+  │       ↓
+  │     Oracle
+  │
+  └── ByteCare Intelligence / FastAPI (:8001)
+          ├── Motor de recomendação
+          ├── Motor de risco + guardrails
+          ├── System Prompt + Pydantic
+          ↓
+        Google Gemini
 ```
+
+A API de IA não acessa diretamente o Oracle. O aplicativo obtém os dados pela API Java e envia somente o contexto necessário para o serviço de IA.
+
+## Endpoints
+
+```text
+GET  /api/v1/health
+GET  /api/v1/servicos
+POST /api/v1/plano-cuidado
+POST /api/v1/clinica/priorizacao
+POST /api/v1/analises
+POST /api/v1/chat
+```
+
+Swagger:
+
+```text
+http://127.0.0.1:8001/docs
+```
+
+Exemplos de requisição prontos na pasta [examples](examples).
+
+## Tecnologias
+
+- Python
+- FastAPI
+- Pydantic
+- Google Gemini
+- Google Gen AI SDK
+- Uvicorn
+- python-dotenv
+- unittest
+
+Telas do app mobile que usam esta API:
+
+| Tela | Endpoint | O que mostra |
+|---|---|---|
+| Painel da Clínica (Home, só admin) | `/clinica/priorizacao` | fila de todos os pets por prioridade e botão "Notificar tutor" |
+| Plano de Cuidado (no pet, só admin) | `/plano-cuidado` | prioridade, score, ações com prazo, serviços recomendados |
+| Notificações (sino na Home) | `/clinica/priorizacao` + API principal | mensagens da clínica, alertas automáticos da IA e lembretes do tutor |
+| Análise IA (no pet) | `/analises` | resumo estruturado do histórico |
+| Assistente (botão flutuante) | `/chat` | conversa com memória, guardrails e ações com confirmação |
+| Agendamentos (Home) | API principal | tutor acompanha e cancela; clínica confirma, recusa e apaga |
+
+Integrações utilizadas na demonstração:
+
+- React Native / Expo
+- Spring Boot
+- Oracle
+
+## Estrutura
+
+```text
 bytecare-api-ai-2sem/
 ├── app/
-│   ├── __init__.py
-│   ├── chat_service.py       # Orquestração do chatbot, controle de histórico e salvaguardas
-│   ├── gemini_service.py     # Integração oficial com Google Gemini 2.5 Flash via SDK google-genai
-│   ├── main.py               # Servidor FastAPI e rotas REST (/health, /analises, /chat)
-│   ├── mock_service.py       # Fallback mock determinístico com 100% de paridade Pydantic
-│   ├── prompt.py             # System Prompts, Guardrails éticos e contexto multiespécie
-│   ├── risk_engine.py        # Motor de Regras Determinístico e cálculo de scores vitais
-│   └── schemas.py            # Modelos estruturados e tipados com Pydantic v2
+│   ├── main.py
+│   ├── schemas.py
+│   ├── care_engine.py
+│   ├── risk_engine.py
+│   ├── prompt.py
+│   ├── guardrails.py
+│   ├── llm.py
+│   ├── gemini_service.py
+│   ├── chat_service.py
+│   ├── cadastro.py
+│   ├── observacao.py
+│   ├── agendamento.py
+│   ├── remocao.py
+│   └── mock_service.py
 ├── tests/
-│   ├── test_risk_engine.py   # Testes unitários do motor de regras e prioridades
-│   ├── analiseDoHistorico.png# Evidência de teste da análise
-│   ├── avaliacaoDoAnimal.png # Evidência de teste de avaliação
-│   ├── cadastroDeVacina.png  # Evidência de teste de vacinação
-│   └── proteção.png          # Evidência de teste de guardrail
+│   ├── test_care_engine.py
+│   ├── test_risk_engine.py
+│   ├── test_chat.py
+│   ├── test_guardrails.py
+│   ├── test_cadastro.py
+│   ├── test_observacao.py
+│   ├── test_agendamento.py
+│   ├── test_remocao.py
+│   ├── test_vacinas_especies.py
+│   └── test_api.py
+├── examples/
+│   ├── plano_cao_senior.json
+│   ├── plano_gato_urgente.json
+│   └── priorizacao_clinica.json
 ├── docs/
-│   ├── ARCHITECTURE.md       # Arquitetura técnica detalhada, justificativa e matriz multiespécie
-│   ├── VIDEO_PITCH_SCRIPT.md # Roteiro de 5 minutos do vídeo pitch (rubrica do GS.pdf)
-│   ├── LOCAL_SETUP.md        # Manual de execução local passo a passo
-│   ├── arquitetura.png       # Diagrama de blocos
-│   └── screenshots/          # Capturas reais do app mobile integrado à IA no emulador Android
-├── requirements.txt          # Dependências Python estritas
-├── .env.example              # Exemplo de variáveis de ambiente
-├── .env                      # Configuração local (fallback mock ou chave Gemini)
-├── .gitignore                # Ignora __pycache__, ambientes virtuais e logs
-├── SUBMISSION_LINKS.txt      # Arquivo oficial com os links para entrega da FIAP
-└── README.md                 # Esta documentação
+│   ├── ARCHITECTURE.md
+│   ├── DADOS.md
+│   ├── LOCAL_SETUP.md
+│   ├── arquitetura.png
+│   └── fluxo-ia.png
+├── .env.example
+├── .gitignore
+├── requirements.txt
+└── README.md
 ```
 
----
+## Como executar
 
-## 🧠 Arquitetura Técnica de IA (Critérios da GS)
+Acesse a pasta:
 
-### 1. Por que uma Arquitetura Híbrida de IA?
-Modelos de linguagem generativos (LLMs) são probabilísticos. Em saúde animal, uma resposta imprecisa ou alucinada pode induzir o tutor ao erro e custar a vida de um animal.
-
-Para atender à **Resolução CFMV nº 1.488/2022** do Conselho Federal de Medicina Veterinária, o ByteCare implementou uma **Arquitetura Híbrida de Dois Níveis**:
-
-```
-[Dados do Histórico ou Mensagem do Usuário]
-                     │
-                     ▼
-  ┌─────────────────────────────────────────────────────────┐
-  │    NÍVEL 1: MOTOR DETERMINÍSTICO (risk_engine.py)       │
-  │    - Regras booleanas e pontuação matemática objetiva   │
-  │    - Detecção de palavras-chave vitais de emergência:   │
-  │      convulsão, hemorragia, atropelamento, choque, etc. │
-  │    - Score mínimo de risco: NORMAL, MODERADO ou URGENTE │
-  │    - Imune a manipulação via Prompt Injection           │
-  └──────────────────────────┬──────────────────────────────┘
-                             │ Nível de Risco & Flags Travadas
-                             ▼
-  ┌─────────────────────────────────────────────────────────┐
-  │     NÍVEL 2: IA GENERATIVA COM GUARDRAILS (Gemini)      │
-  │    - Google Gemini 2.5 Flash com Structured Outputs     │
-  │    - System Prompt rigoroso com restrições veterinárias │
-  │    - Proibição de diagnóstico conclusivo e prescrição   │
-  │    - Fallback transparente para Mock Service            │
-  └──────────────────────────┬──────────────────────────────┘
-                             │
-                             ▼
-  ┌─────────────────────────────────────────────────────────┐
-  │         VALIDAÇÃO E SERIALIZAÇÃO PYDANTIC v2            │
-  │    - AnaliseSaudeResponse / ChatResponse tipados        │
-  └─────────────────────────────────────────────────────────┘
+```bash
+cd bytecare-api-ai-2sem
 ```
 
-### 2. Motor de Regras Determinístico (`risk_engine.py`)
-- **Regra de Vacinas:** Se houver vacinas com mais de 365 dias sem reforço ou sem data, adiciona pontuação de risco e sinaliza necessidade preventiva.
-- **Regra de Emergência:** Se o texto do tutor contiver termos como *convulsão*, *sangramento abundante*, *atropelado*, *cianose* ou *inconsciente*, a prioridade é forçada para `URGENTE`, ativando `procurar_veterinario = true`.
-- **Regra de Prioridade Máxima:** O LLM **nunca pode rebaixar a prioridade** calculada pelo motor de regras.
+Crie e ative o ambiente virtual:
 
-### 3. Guardrails Veterinários (`prompt.py`)
-- **Recusa de Diagnóstico:** A IA nunca afirma categoricamente a patologia; utiliza termos orientativos.
-- **Proibição de Medicamentos:** Jamais receita fármacos com tarja, anti-inflamatórios ou antibióticos.
-- **Disclaimer Obrigatório:** Toda saída contém a advertência formal de que a IA apoia o acompanhamento, mas **não substitui o médico-veterinário**.
-
----
-
-## 🐶 Matriz de Personalização Multiespécie
-
-| Categoria | Espécie | Foco Clínico e Sanitário | Comportamento da IA |
-| :--- | :--- | :--- | :--- |
-| **Pets** | Cães | V8/V10, Antirrábica, controle de ectoparasitas e torção gástrica. | Empático, foco na rotina do tutor e passeios. |
-| **Pets** | Gatos | Vacina Quádrupla/Quíntupla (FeLV), estresse urinário e hidratação. | Focado em sutilezas comportamentais e enriquecimento. |
-| **Agro** | Bovinos | Aftosa, Brucelose, Clostridioses, controle de mastite e ruminação. | Técnico, zootécnico e focado em sanidade do lote. |
-| **Agro** | Equinos | Tétano, Influenza, Encefalomielite e alerta absoluto para cólica. | Alerta imediato e rigoroso para dor abdominal ou claudicação. |
-| **Pássaros** | Aves | Higiene de gaiola, respiração com bico aberto e prostração. | Sensível à rápida evolução de quadros clínicos em aves. |
-| **Pets** | Peixes | Parâmetros de água (pH, amônia tóxica, nitrito e temperatura). | Educativo sobre química da água e ciclagem de aquário. |
-
----
-
-## 📡 Especificação da API REST (Endpoints)
-
-### 1. `GET /api/v1/health`
-Retorna a integridade do microserviço.
-```json
-{
-  "status": "ok",
-  "version": "1.0.0",
-  "service": "ByteCare Intelligence API"
-}
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
-### 2. `POST /api/v1/analises`
-Consolida os registros clínicos do animal e retorna a análise longitudinal estruturada.
-* **Corpo da Requisição:** `AnaliseSaudeRequest` (animal, preventivos, terapeuticos, bem_estar).
-* **Resposta:** `AnaliseSaudeResponse` contendo:
-  - `prioridade`: `baixa`, `moderada` ou `urgente`
-  - `resumo_clinico`: Síntese concisa do histórico
-  - `fatores_atencao`: Lista de itens que demandam cuidado
-  - `proximos_passos`: Ações preventivas recomendadas
-  - `aviso_seguranca`: Disclaimer ético obrigatório
-  - `modo`: `gemini` ou `mock`
+No Windows:
 
-### 3. `POST /api/v1/chat`
-Processa mensagens no chatbot com histórico de conversa e contexto ativo do animal.
-* **Corpo da Requisição:** `ChatRequest` (mensagem, historico, animal, preventivos, etc.).
-* **Resposta:** `ChatResponse` contendo:
-  - `resposta`: Texto humanizado e empático
-  - `nivel_atencao`: `normal`, `atencao` ou `urgente`
-  - `procurar_veterinario`: Booleano (dispara alerta nativo no app quando `true`)
-  - `aviso_seguranca`: Salvaguarda regulatória
-  - `acao`: `duvida_geral`, `triagem`, `cadastro_vacina` ou `cadastro_animal`
-
----
-
-## 🚀 Como Executar Localmente
-
-### 1. Pré-Requisitos
-- Python 3.10 ou superior (testado com Python 3.14.3)
-- Gerenciador de pacotes `pip`
-
-### 2. Instalação
 ```powershell
-# Acesse o diretório do repositório
-cd C:\Users\labsfiap\Desktop\challenge\bytecare-api-ai-2sem
+.venv\Scripts\activate
+```
 
-# Crie e ative o ambiente virtual (opcional, recomendado)
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+Instale as dependências:
 
-# Instale as dependências
+```bash
 pip install -r requirements.txt
 ```
 
-### 3. Configuração de Ambiente (`.env`)
-O arquivo `.env` pode ser configurado com sua chave da Google AI Studio:
+Crie o `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Configure:
+
 ```env
-GEMINI_API_KEY=sua_chave_do_google_aistudio_aqui
-PORT=8001
-HOST=0.0.0.0
-```
-> **Nota de Resiliência:** Se `GEMINI_API_KEY` for omitida ou deixada em branco, o serviço entra automaticamente em modo **Mock Inteligente**, mantendo paridade estrita de dados e permitindo o uso completo do sistema offline.
-
-### 4. Inicialização do Servidor
-```powershell
-python -m uvicorn app.main:app --host 0.0.0.0 --port 8001
+BYTECARE_AI_MODE=gemini
+GEMINI_API_KEY=SUA_CHAVE_GEMINI
+GEMINI_MODEL=gemini-3.5-flash
+GEMINI_FALLBACK_MODELS=gemini-3.6-flash,gemini-3.7-flash,gemini-3.8-flash,gemini-3-flash-preview,gemini-3.1-flash-lite,gemini-3.5-flash-lite,gemini-flash-latest
+CORS_ORIGINS=*
 ```
 
-O serviço estará ativo em:
-- **API Base:** `http://localhost:8001/api/v1`
-- **Documentação Interativa Swagger:** `http://localhost:8001/docs`
-- **Documentação Redoc:** `http://localhost:8001/redoc`
+Se o modelo principal estiver sobrecarregado, sem cota ou descontinuado, a API tenta os modelos de `GEMINI_FALLBACK_MODELS` na ordem (até 15 s por modelo e 30 s no total). A cota do plano gratuito é separada por modelo, por isso a lista tem sete reservas: primeiro os que falham rápido quando sem cota, por último os que costumam demorar. Se nenhum responder, usa o modo mock, e o app nunca fica sem resposta.
 
----
+Inicie a API:
 
-## 🧪 Testes Automatizados
-
-Para executar a suíte de testes unitários do motor determinístico e dos guardrails:
-```powershell
-python -m unittest discover -s tests -v
+```bash
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
 ```
 
-Resultado:
-```
-test_llm_cannot_lower_priority (test_risk_engine.RiskEngineTests) ... ok
-test_respiratory_red_flag_sets_urgent (test_risk_engine.RiskEngineTests) ... ok
-test_therapeutic_context_sets_moderate_minimum (test_risk_engine.RiskEngineTests) ... ok
-----------------------------------------------------------------------
-Ran 3 tests in 0.001s
+Health Check:
 
-OK
+```text
+http://127.0.0.1:8001/api/v1/health
 ```
 
----
+Teste o plano de cuidado:
 
-## 📱 Integração com o Aplicativo Mobile e Backend
+```bash
+curl -X POST http://127.0.0.1:8001/api/v1/plano-cuidado \
+  -H "Content-Type: application/json" \
+  -d @examples/plano_cao_senior.json
+```
 
-Este microserviço é consumido diretamente pelo aplicativo mobile ByteCare no emulador Android através de:
-- `http://10.0.2.2:8001/api/v1` (ou `http://localhost:8001/api/v1` com `adb reverse tcp:8001 tcp:8001`).
+Para subir o sistema completo (API Java, esta API e o app mobile), veja [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md).
 
-### Evidências da Execução no Emulador Android:
-<div align="center">
+## Modo Mock
 
-| Tela de Análise Longitudinal (`AnaliseIA.jsx`) | Chat com Detecção de Urgência (`ChatIA.jsx`) |
-| :---: | :---: |
-| ![Análise IA](docs/screenshots/screen_analise_ia.png) | ![Chat Urgente](docs/screenshots/screen_chat_urgente.png) |
+Para executar sem utilizar o Gemini:
 
-</div>
+```env
+BYTECARE_AI_MODE=mock
+```
 
----
+Nesse modo o plano de cuidado e a priorização continuam completos, pois as decisões são do motor determinístico; apenas os textos para tutor e clínica usam modelos fixos. Se o Gemini estiver configurado mas indisponível, o plano de cuidado usa automaticamente esses textos.
 
-## 👥 Equipe e Submissão FIAP
+## Testes
 
-- **Disciplina:** Disruptive Architectures: IoT, IoB & Generative IA
-- **Repositório Unificado:** [`bytecare-api-ai-2sem`](https://github.com/Gutemberg149/bytecare-api-ai-2sem)
-- **Documento de Arquitetura:** [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- **Roteiro do Pitch de 5 Minutos:** [docs/VIDEO_PITCH_SCRIPT.md](docs/VIDEO_PITCH_SCRIPT.md)
-- **Arquivo com Links de Submissão:** [SUBMISSION_LINKS.txt](SUBMISSION_LINKS.txt)
-- **Pacote Compactado para Entrega:** `bytecare-api-ai-2sem.zip`
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+Os testes validam:
+
+- personalização por espécie e fase de vida;
+- vacinas essenciais pendentes e reforços atrasados;
+- sinais recentes elevando a prioridade para urgente (e registros antigos tratados como histórico);
+- ordenação das ações e da fila da clínica;
+- que o LLM não reduz uma prioridade mínima já definida;
+- memória do chat (não repetir perguntas, negações como "não vomitou");
+- guardrails: manipulação, assuntos fora do escopo, doses e urgência;
+- ações do chat: cadastro de pet, registro de condição, agendamento só com dia e horário, lista de pets e pedido para apagar o pet (sem confundir com apagar agendamento ou vacina);
+- os endpoints da API.
+
+## Resultados
+
+A versão atual possui:
+
+- plano de cuidado personalizado com ações priorizadas e prazos;
+- recomendação de serviços da clínica com score;
+- fila de priorização de pacientes para a clínica;
+- personalização por espécie e fase de vida;
+- análise estruturada do histórico;
+- chatbot contextual;
+- integração com Google Gemini com Structured Output;
+- motor de risco e guardrails de segurança;
+- modos `mock` e `gemini`;
+- assistente com memória de conversa e guardrails de escopo, manipulação e doses;
+- ações pelo chat com confirmação: cadastrar pet, vacina, condição, agendamento, listar e apagar pets;
+- fallback entre oito modelos Gemini;
+- 81 testes automatizados;
+- teste integrado com dados reais da API Java (12 pets do banco Oracle priorizados pela IA).
+
+**ByteCare Intelligence: cuidado contínuo, personalizado e seguro para cada pet.**
