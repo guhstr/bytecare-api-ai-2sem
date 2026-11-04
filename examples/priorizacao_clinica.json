@@ -1,0 +1,35 @@
+{
+  "data_referencia": "2026-11-03",
+  "pacientes": [
+    {
+      "animal": { "id": 10, "nome": "Luna", "tipo": "CACHORRO", "idade": "4 meses" },
+      "preventivos": [
+        { "nomeServico": "Vacina V10 - 1ª dose", "proximoPrevisto": "2026-11-10", "dataHoraRegistro": "2026-10-13T10:00:00" }
+      ]
+    },
+    {
+      "animal": { "id": 2, "nome": "Mia", "tipo": "GATO", "idade": 3 },
+      "preventivos": [
+        { "nomeServico": "Vacina V4", "proximoPrevisto": "2027-02-10" },
+        { "nomeServico": "Antirrábica", "proximoPrevisto": "2027-02-10" }
+      ],
+      "bem_estar": [
+        { "observacao": "Convulsão hoje de manhã", "dataHoraRegistro": "2026-11-03T07:30:00" }
+      ]
+    },
+    {
+      "animal": { "id": 1, "nome": "Thor", "tipo": "CACHORRO", "dataNascimento": "2017-05-10" },
+      "preventivos": [
+        { "nomeServico": "Vacina V10", "proximoPrevisto": "2026-09-15" },
+        { "nomeServico": "Antirrábica", "proximoPrevisto": "2027-03-01" }
+      ],
+      "terapeuticos": [ { "medicamento": "Condroprotetor", "dataHoraRegistro": "2026-10-01T08:00:00" } ],
+      "consultas": [ { "data": "2025-10-02", "motivo": "Check-up anual" } ]
+    },
+    {
+      "animal": { "id": 7, "nome": "Pipoca", "tipo": "CALOPSITA", "idade": 2 },
+      "consultas": [ { "data": "2026-06-01", "motivo": "Rotina" } ],
+      "bem_estar": [ { "observacao": "Cantando e comendo bem", "dataHoraRegistro": "2026-11-01T09:00:00" } ]
+    }
+  ]
+}

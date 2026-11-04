@@ -1,0 +1,51 @@
+{
+  "data_referencia": "2026-11-03",
+  "animal": {
+    "id": 1,
+    "nome": "Thor",
+    "tipo": "CACHORRO",
+    "raca": "Labrador",
+    "dataNascimento": "2017-05-10",
+    "peso": 34.5,
+    "castrado": true,
+    "observacaoGeral": "Ganhou peso no último ano"
+  },
+  "preventivos": [
+    {
+      "nomeServico": "Vacina V10",
+      "descricao": "Reforço anual",
+      "proximoPrevisto": "2026-09-15",
+      "dataHoraRegistro": "2025-09-15T10:00:00"
+    },
+    {
+      "nomeServico": "Vermífugo",
+      "descricao": "Dose trimestral",
+      "proximoPrevisto": "2026-11-20",
+      "dataHoraRegistro": "2026-08-20T09:00:00"
+    }
+  ],
+  "terapeuticos": [
+    {
+      "medicamento": "Condroprotetor",
+      "dosagem": "Conforme prescrição",
+      "observacao": "Suporte articular",
+      "dataHoraRegistro": "2026-10-01T08:00:00"
+    }
+  ],
+  "consultas": [
+    {
+      "data": "2025-10-02",
+      "motivo": "Check-up anual",
+      "veterinario": "Dra. Ana"
+    }
+  ],
+  "bem_estar": [
+    {
+      "atividade": "Passeio",
+      "categoria": "ATIVIDADE",
+      "observacao": "Cansa mais rápido nos passeios",
+      "dataHoraRegistro": "2026-10-28T18:00:00"
+    }
+  ],
+  "comportamento": []
+}

@@ -1,4 +1,5 @@
 import json
+import re
 import unicodedata
 from dataclasses import dataclass
 from typing import Any
@@ -119,6 +120,20 @@ def _flatten_text(data: Any) -> str:
     )
 
 
+# Termos curtos que só valem como palavra inteira ("dor" não casa com "adora").
+WHOLE_WORD_TERMS = {"dor"}
+
+
+def contains_term(text: str, term: str) -> bool:
+    """
+    Procura o termo no início de uma palavra (aceita radicais como
+    'convuls' -> 'convulsão'), evitando falsos positivos dentro de
+    outras palavras.
+    """
+    suffix = r"(es)?\b" if term in WHOLE_WORD_TERMS else ""
+    return re.search(r"\b" + re.escape(term) + suffix, text) is not None
+
+
 def _find_terms(
     text: str,
     terms: dict[str, str],
@@ -129,7 +144,7 @@ def _find_terms(
     return [
         label
         for term, label in terms.items()
-        if term in text
+        if contains_term(text, term)
     ]
 
 def has_urgent_signal(text: str) -> bool:
@@ -149,7 +164,7 @@ def has_urgent_signal(text: str) -> bool:
     normalized_text = _normalize(text)
 
     return any(
-        term in normalized_text
+        contains_term(normalized_text, term)
         for term in URGENT_TERMS
     )
 
